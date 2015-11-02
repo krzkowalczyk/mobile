@@ -1,0 +1,98 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="iu-item">
+  <template>
+    <style>
+      :host {
+        display: block;
+        float: left;
+      }
+      
+      google-map {
+        width: 350px;
+        height: 150px;
+      }
+      paper-card{
+        margin: 15px;
+      }
+      
+      .header.paper-card img.paper-card{
+        width: 350px;
+      }
+      
+      .paper-card-0 .header.paper-card .title-text.paper-card{
+        color: white;
+      }
+    </style>
+    
+      <paper-card>
+        <div class="header style-scope paper-card">
+        <google-map id="myMap" latitude="{{data.lat}}" longitude="{{data.lon}}" fit-to-markers>
+          </google-map>
+      </div>
+          
+          <div class="card-content">
+            <p>
+            name: <b>{{data.name}}</b> </br>
+            city: <b>{{data.city}}</b> </br>
+            temp in C: <b>{{arrayItem(weather.list.*, 0, 'main.temp')}}</b> </br>
+            </p>
+            
+          </div>
+        </paper-card>
+          <byutv-jsonp id='aajax'
+        auto=false
+        url="http://api.openweathermap.org/data/2.5/forecast/city"
+        handle-as="json"
+        last-response="{{weather}}"
+        debounce-duration="300"></byutv-jsonp>
+        
+  
+</template>
+
+  <script>
+    (function () {
+      'use strict';
+
+      Polymer({
+        is: 'iu-item',
+        properties: {
+         data: {
+            type: Object,
+            notify: true,
+            reflectToAttribute: true,
+            observer: "dataChanged"
+          },
+          weather : {
+            type: Object,
+            notify: true,
+            reflectToAttribute: true
+          },
+        },
+        dataChanged: function(){
+          this.$.myMap.resize();
+        },
+        ready: function() {
+          console.log("this.data: "+this.data.lat);
+          this.$.aajax.params = {"lat": this.data.lat,"lon": this.data.lon,"APPID":"5119bd0bbdbd7b9eb5d1e4918a6cb2de", "units":"metric"};
+          this.$.aajax.generateRequest();
+        },
+        arrayItem: function(change, index, path) {
+        // this.get(path, root) returns a value for a path
+        // relative to a root object.
+        return this.get(path, change.base[index]);
+      },
+      });
+    })();
+  </script>
+
+</dom-module>
