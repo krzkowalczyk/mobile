@@ -44,17 +44,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <p>
             name: <b>{{data.name}}</b> </br>
             city: <b>{{data.city}}</b> </br>
-            temp in C: <b>{{arrayItem(weather.list.*, 0, 'main.temp')}}</b> </br>
+           temp in C: <b>{{data.temp}}</b> </br>
             </p>
             
           </div>
         </paper-card>
-          <byutv-jsonp id='aajax'
-        auto=false
-        url="http://api.openweathermap.org/data/2.5/forecast/city"
-        handle-as="json"
-        last-response="{{weather}}"
-        debounce-duration="300"></byutv-jsonp>
+   
         
   
 </template>
@@ -75,22 +70,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           weather : {
             type: Object,
             notify: true,
-            reflectToAttribute: true
-          },
+            reflectToAttribute: true,
+            value : null
+          }
         },
         dataChanged: function(){
           this.$.myMap.resize();
         },
         ready: function() {
-          console.log("this.data: "+this.data.lat);
-          this.$.aajax.params = {"lat": this.data.lat,"lon": this.data.lon,"APPID":"5119bd0bbdbd7b9eb5d1e4918a6cb2de", "units":"metric"};
-          this.$.aajax.generateRequest();
-        },
-        arrayItem: function(change, index, path) {
-        // this.get(path, root) returns a value for a path
-        // relative to a root object.
-        return this.get(path, change.base[index]);
-      },
+        }
       });
     })();
   </script>

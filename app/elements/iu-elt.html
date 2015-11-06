@@ -19,7 +19,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       
     </style>
       <template is="dom-repeat" items="{{items}}" observe="visible" filter="isVisible">
-        <iu-item data={{item}}></iu-item>
+        <iu-item data={{item}} ></iu-item>
       </template>
 
   </template>
@@ -55,9 +55,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               this.set('items.'+i+'.visible', false);
             }
           }
+          
         },
         ready: function() {
-          this.items = [
+          var tempItems = [
                {
                     'city': 'London',
                     'sso': '212409955',
@@ -101,6 +102,65 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
 
           ];
+          
+          var syncTasksController = {
+              tasks: [],
+              final: null,
+              prepare: function (finalFunc) {
+                  syncTasksController.tasks = [];
+                  syncTasksController.final = finalFunc;
+              },
+              execute: function () {
+                  syncTasksController.controller(syncTasksController.tasks.shift());
+              },
+              addTask: function (task, i) {
+                  syncTasksController.tasks.push({'fun' : task, 'i' : i});
+              },
+              controller: function (task) {
+                  if (task) {
+                      task.fun(syncTasksController.tasks.shift(), syncTasksController.controller, task.i);
+                  } else {
+                      return syncTasksController.final();
+                  }
+              },
+        };
+        
+        var getTemp = function (elt, callback, i) {
+          var item = tempItems[i];
+          $.ajax({
+            url: 'http://api.openweathermap.org/data/2.5/forecast/city',
+            data: {
+                "lat": item.lat,
+                "lon": item.lon,
+                "APPID":"5119bd0bbdbd7b9eb5d1e4918a6cb2de",
+                "units":"metric"
+            },
+            error: function() {
+                console.log("ajax error");
+            },
+            dataType: 'jsonp',
+            success: function(data) {
+              console.log("seting temp for: "+item.city+" weather: "+data.list[0].main.temp );
+                item.temp = data.list[0].main.temp;
+                return callback(elt);
+            },
+            type: 'GET'
+          });
+ 
+        }
+        
+        var self = this;
+        var finalize = function(){
+          self.items = tempItems;
+        }
+        
+        syncTasksController.prepare(finalize);
+        syncTasksController.addTask(getTemp, 0);
+        syncTasksController.addTask(getTemp, 1);
+        syncTasksController.addTask(getTemp, 2);
+        syncTasksController.addTask(getTemp, 3);
+        syncTasksController.addTask(getTemp, 4);
+        syncTasksController.execute();
         
         }
       });
