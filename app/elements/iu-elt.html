@@ -49,13 +49,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         onSearchChange: function(nV, oV){
           for(var i in this.items){
             var item = this.items[i];
-            if(item.sso.indexOf(nV) != -1 || item.name.indexOf(nV) != -1 || item.city.indexOf(nV) != -1 || nV == ""){
+            if(item.sso.toLowerCase().indexOf(nV.toLowerCase()) != -1 || item.name.toLowerCase().indexOf(nV.toLowerCase()) != -1 || item.city.toLowerCase().indexOf(nV.toLowerCase()) != -1 || nV == ""){
               this.set('items.'+i+'.visible', true);
             } else {
               this.set('items.'+i+'.visible', false);
             }
           }
-          
+
         },
         ready: function() {
           var tempItems = [
@@ -111,7 +111,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
 
           ];
-          
+
           var syncTasksController = {
               tasks: [],
               final: null,
@@ -133,7 +133,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   }
               },
         };
-        
+
         var getTemp = function (elt, callback, i) {
           var item = tempItems[i];
           $.ajax({
@@ -155,14 +155,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             type: 'GET'
           });
- 
+
         }
-        
+
         var self = this;
         var finalize = function(){
           self.items = tempItems;
         }
-        
+
         syncTasksController.prepare(finalize);
         syncTasksController.addTask(getTemp, 0);
         syncTasksController.addTask(getTemp, 1);
@@ -170,7 +170,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         syncTasksController.addTask(getTemp, 3);
         syncTasksController.addTask(getTemp, 4);
         syncTasksController.execute();
-        
+
         }
       });
     })();
