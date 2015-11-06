@@ -80,6 +80,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <iron-icon icon="home"></iron-icon>
             <span>Home</span>
           </a>
+          <a data-route="about" href="/" on-click="onDataRouteClick">
+            <iron-icon icon="home"></iron-icon>
+            <span>About</span>
+          </a>
         </paper-menu>
       </paper-scroll-header-panel>
 
@@ -118,6 +122,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               
                 <iu-elt search="{{toSearch}}"></iu-elt>
             
+
+            </section>
+
+            <section data-route="about">
+              
+                <iu-about></iu-about>
 
             </section>
 
