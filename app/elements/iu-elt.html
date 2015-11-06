@@ -164,11 +164,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         syncTasksController.prepare(finalize);
-        syncTasksController.addTask(getTemp, 0);
-        syncTasksController.addTask(getTemp, 1);
-        syncTasksController.addTask(getTemp, 2);
-        syncTasksController.addTask(getTemp, 3);
-        syncTasksController.addTask(getTemp, 4);
+        
+        for(var i in tempItems){
+          syncTasksController.addTask(getTemp, i);
+        }
+        
         syncTasksController.execute();
 
         }
