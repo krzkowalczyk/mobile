@@ -14,10 +14,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style>
       :host {
         display: block;
+        
+      }
+      
+      paper-card{
+        margin: 15px;
+        padding: 15px;
+        width: 350px;
+        height-max: 274px;
+        float: left;
+      }
+      
+      .header.paper-card img.paper-card{
+        width: 350px;
       }
 
 
     </style>
+      <paper-card id="aboutCard">
+        <div class="header style-scope paper-card">
+        <b>About</b>
+      </div>
+          
+          <div class="card-content">
+            <p>
+            name:</br>
+            city:  </br>
+           temp in C:  </br>
+            </p>
+            
+          </div>
+          <div class="card-actions">
+          <paper-button on-click="hideElt">Hide</paper-button>
+        </div>
+      </paper-card>
       <template is="dom-repeat" items="{{items}}" observe="visible" filter="isVisible">
         <iu-item data={{item}} ></iu-item>
       </template>
@@ -56,6 +86,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
           }
 
+        },
+        hideElt: function(){
+          console.log("in hide");
+          this.$.aboutCard.style.display = "none";
         },
         ready: function() {
           var tempItems = [

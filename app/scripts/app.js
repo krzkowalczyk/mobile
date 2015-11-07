@@ -32,6 +32,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   window.addEventListener('WebComponentsReady', function() {
     // imports are loaded and elements have been registered
     app.route = "home";
+    
+    var elt = document.querySelector('#main');
+    elt.style.left = "0px";
+    
+    elt = document.querySelector('#drawer');
+    elt.style.width = "0px";
   });
 
   // Main area's paper-scroll-header-panel custom condensing transformation of
@@ -57,6 +63,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     // Scale middleContainer appName
     Polymer.Base.transform('scale(' + scaleMiddle + ') translateZ(0)', appName);
+    
+    var elt = document.querySelector('#main');
+    elt.style.left = "0px";
+    
+    elt = document.querySelector('#drawer');
+    elt.style.width = "0px";
   });
 
   // Close drawer after menu item is selected if drawerPanel is narrow
